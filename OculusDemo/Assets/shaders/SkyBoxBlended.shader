@@ -1,0 +1,62 @@
+
+Shader "RenderFX/Skybox Blended Fog" {
+Properties {
+	//Sky and Rise Color
+    _Tint ("Tint Color", Color) = (.5, .5, .5, .5)
+    _RiseTint ("Sun Rise Tint", Color) = (.5, .5, .5, .5)
+    // First Color
+    _FrontTex ("Front (+Z)", 2D) = "white" {}
+    _BackTex ("Back (-Z)", 2D) = "white" {}
+    _LeftTex ("Left (+X)", 2D) = "white" {}
+    _RightTex ("Right (-X)", 2D) = "white" {}
+    _UpTex ("Up (+Y)", 2D) = "white" {}
+    _DownTex ("Down (-Y)", 2D) = "white" {}
+    // Second Color
+    _FrontTex2("2 Front (+Z)", 2D) = "white" {}
+    _BackTex2("2 Back (-Z)", 2D) = "white" {}
+    _LeftTex2("2 Left (+X)", 2D) = "white" {}
+    _RightTex2("2 Right (-X)", 2D) = "white" {}
+    _UpTex2("2 Up (+Y)", 2D) = "white" {}
+    _DownTex2("2 Down (-Y)", 2D) = "white" {}
+    // Rise Front and Back
+    _RiseFront("Rise Front", 2D) = "white" {}
+    _RiseBack("Rise Back", 2D) = "white" {}
+}
+
+
+SubShader {
+    Tags { "Queue" = "Background" }
+    Cull Off
+    Fog { Mode Off }
+    Lighting Off        
+    Color [_Tint]
+    Pass {
+        SetTexture [_FrontTex] { combine texture }
+        SetTexture [_FrontTex2] { constantColor[_Tint] combine texture lerp(constant) previous }
+        //SetTexture [_RiseFront] { constantColor[_RiseTint] combine constant lerp (texture) previous }
+    }
+    Pass {
+        SetTexture [_BackTex] { combine texture }
+        SetTexture [_BackTex2] { constantColor[_Tint] combine texture lerp(constant) previous }
+        //SetTexture [_RiseBack] { constantColor[_RiseTint] combine constant lerp (texture) previous }
+    }
+    Pass {
+        SetTexture [_LeftTex] { combine texture }
+        SetTexture [_LeftTex2] { constantColor[_Tint] combine texture lerp(constant) previous }
+    }
+    Pass {
+        SetTexture [_RightTex] { combine texture }
+        SetTexture [_RightTex2] { constantColor[_Tint] combine texture lerp(constant) previous }
+    }
+    Pass {
+        SetTexture [_UpTex] { combine texture }
+        SetTexture [_UpTex2] { constantColor[_Tint] combine texture lerp(constant) previous }
+    }
+    Pass {
+        SetTexture [_DownTex] { combine texture }
+        SetTexture [_DownTex2] { constantColor[_Tint] combine texture lerp(constant) previous }
+    }
+}
+
+Fallback "RenderFX/Skybox", 1
+}
