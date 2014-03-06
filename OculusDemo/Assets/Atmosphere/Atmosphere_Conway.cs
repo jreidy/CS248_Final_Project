@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Atmosphere : MonoBehaviour {
+public class Atmosphere_Conway : MonoBehaviour {
 	
 	int cloud_time_step = 100;
 	int cloud_time = 0;
