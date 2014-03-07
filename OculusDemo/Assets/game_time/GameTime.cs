@@ -103,7 +103,6 @@ public class GameTime : MonoBehaviour {
 		}
 		
 		//blend_value = _timeOfDay / _dayCycleInSeconds * 2;
-		print (blend_value);
 			
 		Color c = new Color(0.5f, 0.5f, 0.5f, blend_value);
 		RenderSettings.skybox.SetColor("_Tint", c);
