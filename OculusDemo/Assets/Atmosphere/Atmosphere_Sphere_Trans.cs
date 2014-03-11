@@ -13,11 +13,11 @@ public class Atmosphere_Sphere_Trans : MonoBehaviour {
 	
 	private float cloud_spacer = 6.0f;
 	
-	private int number_clouds = 100;
-	private int cloud_base_offset = 700;
+	private int number_clouds = 30;
+	private int cloud_base_offset = 300;
 	
-	private float min_size = 15.0f;
-	private float max_size = 60.0f;
+	private float min_size = 100.0f;
+	private float max_size = 200.0f;
 	
 	private float rand_rotation = 360.0f;
 

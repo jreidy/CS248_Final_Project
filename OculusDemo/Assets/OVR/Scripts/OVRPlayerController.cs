@@ -215,11 +215,12 @@ public class OVRPlayerController : OVRComponent
 			
 		// Move
 			
-		// WASD
+		// WASD and F
 		if (Input.GetKey(KeyCode.W)) moveForward = true;
 		if (Input.GetKey(KeyCode.A)) moveLeft	 = true;
 		if (Input.GetKey(KeyCode.S)) moveBack 	 = true; 
 		if (Input.GetKey(KeyCode.D)) moveRight 	 = true; 
+		if (Input.GetKey(KeyCode.F)) Jump();
 		// Arrow keys
 		if (Input.GetKey(KeyCode.UpArrow))    moveForward = true;
 		if (Input.GetKey(KeyCode.LeftArrow))  moveLeft 	  = true;
