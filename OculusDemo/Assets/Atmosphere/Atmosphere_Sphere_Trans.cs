@@ -19,6 +19,9 @@ public class Atmosphere_Sphere_Trans : MonoBehaviour {
 	private float min_size = 100.0f;
 	private float max_size = 200.0f;
 	
+	private float min_height = 30.0f;
+	private float max_height = 100.0f;
+	
 	private float rand_rotation = 360.0f;
 
 	// Use this for initialization
@@ -39,8 +42,9 @@ public class Atmosphere_Sphere_Trans : MonoBehaviour {
 			new_cloud.SetActive(true);
 			new_cloud.transform.parent = cloud_container.transform;
 			float rand_width = Random.Range(min_size, max_size);
-			float rand_height = Random.Range(min_size, max_size);
-			new_cloud.transform.localScale = new Vector3(rand_width, 10, rand_height);
+			float rand_length = Random.Range(min_size, max_size);
+			float rand_height = Random.Range (min_height, max_height);
+			new_cloud.transform.localScale = new Vector3(rand_width, rand_height, rand_length);
 			
 			float rand_rotation_x = Random.Range(-rand_rotation, rand_rotation);
 			float rand_rotation_z = Random.Range(-rand_rotation, rand_rotation);

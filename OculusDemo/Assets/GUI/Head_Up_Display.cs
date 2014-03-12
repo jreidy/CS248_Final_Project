@@ -5,6 +5,8 @@ public class Head_Up_Display : VRGUI
 {
 	public GUISkin skin;
 	
+	public Transform _camera_transform;
+	
 	public TextMesh _round_text_mesh;
 	public GameObject _balance_cylinder;
 	public GameObject _balance_needle;
@@ -44,6 +46,7 @@ public class Head_Up_Display : VRGUI
 	
 	public override void OnVRGUI()
 	{
+		//_balance_needle.transform.Rotate(0, 0, _camera_transform.rotation.z);
 		_round_text_mesh.text = _round_number.ToString();
 	}
 }

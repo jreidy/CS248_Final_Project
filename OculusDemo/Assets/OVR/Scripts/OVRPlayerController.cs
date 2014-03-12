@@ -189,7 +189,7 @@ public class OVRPlayerController : OVRComponent
 		
 		// Update rotation using CameraController transform, possibly proving some rules for 
 		// sliding the rotation for a more natural movement and body visual
-		UpdatePlayerForwardDirTransform();
+		//UpdatePlayerForwardDirTransform();
 	}
 		
 	// UpdateMovement
@@ -217,10 +217,10 @@ public class OVRPlayerController : OVRComponent
 			
 		// WASD and F
 		if (Input.GetKey(KeyCode.W)) moveForward = true;
-		if (Input.GetKey(KeyCode.A)) moveLeft	 = true;
+//		if (Input.GetKey(KeyCode.A)) moveLeft	 = true;
 		if (Input.GetKey(KeyCode.S)) moveBack 	 = true; 
-		if (Input.GetKey(KeyCode.D)) moveRight 	 = true; 
-		if (Input.GetKey(KeyCode.F)) Jump();
+//		if (Input.GetKey(KeyCode.D)) moveRight 	 = true; 
+//		if (Input.GetKey(KeyCode.F)) Jump();
 		// Arrow keys
 		if (Input.GetKey(KeyCode.UpArrow))    moveForward = true;
 		if (Input.GetKey(KeyCode.LeftArrow))  moveLeft 	  = true;
