@@ -26,14 +26,24 @@ public class CustomPlayerController : MonoBehaviour {
 
 	private bool yaw_is_negative = true;
 	
-	private int player_health = 100;
+	private float player_health = 1.0f;
+	private float balance_bar_scale_x = 2.0f;
+	private float balance_bar_length;
+	private float balance_bar_length_init;
+	
+	private float prev_roll_correction_component;
+	private float prev_roll_component;
 	
 	void Start () {
 		wind_generator = GetComponent<WindGenerator>();
+		balance_bar_length = player_health * balance_bar_scale_x;
+		balance_bar_length_init = balance_bar_length;
 	}
 	
 	void Update () {
 		if (!has_fallen) {
+			if (Input.GetKey ("f")) player_health -= 0.1f;
+			UpdateBalanceBar();
 			ApplyWind();
 			CheckHeadYaw();
 			CheckHeadRoll();
@@ -41,10 +51,14 @@ public class CustomPlayerController : MonoBehaviour {
 		}
 	}
 	
+	void UpdateBalanceBar() {
+		balance_bar_length = player_health * balance_bar_scale_x;
+		BalanceBar.transform.localScale = new Vector3(balance_bar_scale_x * player_health,
+			BalanceBar.transform.localScale.y,
+			BalanceBar.transform.localScale.z);
+	}
+	
 	void ApplyWind() {
-		Vector3 wind_vec = new Vector3(wind_generator.wind_value,0,0);
-		Vector3 sway_position =  player_controller.transform.position + wind_vec;
-		//camera_controller.transform.position = sway_position;
 		wind_value = wind_generator.wind_value;
 		UpdateWindMeter();
 	}
@@ -64,8 +78,7 @@ public class CustomPlayerController : MonoBehaviour {
 	}
 	
 	void UpdateWindMeter() {
-		float balance_bar_length = BalanceBar.transform.localScale.x;
-		float wind_meter_position_x = BalanceBar.transform.localPosition.x + wind_value * balance_bar_length / 2;
+		float wind_meter_position_x = BalanceBar.transform.localPosition.x + wind_value * balance_bar_length_init / 2;
 		Vector3 wind_meter_vector = new Vector3(wind_meter_position_x,
 								WindMeter.transform.localPosition.y,
 								WindMeter.transform.localPosition.z);
@@ -73,10 +86,14 @@ public class CustomPlayerController : MonoBehaviour {
 	}
 	
 	void UpdateBalanceMeter() {
-		float balance_bar_length = BalanceBar.transform.localScale.x;
 		float balance_meter_position_x = BalanceBar.transform.localPosition.x - roll_value * roll_sensitivity * balance_bar_length / 2;
 		if (yaw_is_negative) {
 			balance_meter_position_x = -balance_meter_position_x;	
+		}
+		if (Mathf.Abs(balance_meter_position_x - prev_roll_component) > 0.5) {
+			balance_meter_position_x = prev_roll_component;
+		} else {
+			prev_roll_component = balance_meter_position_x;
 		}
 		Vector3 balance_meter_vector = new Vector3(balance_meter_position_x,
 								BalanceMeter.transform.localPosition.y,
@@ -85,17 +102,27 @@ public class CustomPlayerController : MonoBehaviour {
 	}
 	
 	void ApplyCorrection() {
-		float balance_bar_length = BalanceBar.transform.localScale.x;
-		float roll_correction_component = BalanceBar.transform.localPosition.x - roll_value * roll_sensitivity * balance_bar_length / 2;
+		float roll_correction_component = BalanceBar.transform.localPosition.x - roll_value * roll_sensitivity * balance_bar_length_init / 2;
 		if (yaw_is_negative) {
 			roll_correction_component = -roll_correction_component;
 		}
-		float corrected_meter_position_x = BalanceBar.transform.localPosition.x + (wind_value + roll_correction_component) * balance_bar_length / 2;
+		if (Mathf.Abs(roll_correction_component - prev_roll_correction_component) > 0.2) {
+			roll_correction_component = prev_roll_correction_component;
+		} else {
+			prev_roll_correction_component = roll_correction_component;
+		}
+		float corrected_meter_position_x = BalanceBar.transform.localPosition.x + (wind_value + roll_correction_component) * balance_bar_length_init / 2;
 		Vector3 corrected_meter_vector = new Vector3(corrected_meter_position_x,
 								CorrectedMeter.transform.localPosition.y,
 								CorrectedMeter.transform.localPosition.z);
 		CorrectedMeter.transform.localPosition = corrected_meter_vector;
-		print(corrected_meter_position_x);
+		if (Mathf.Abs(corrected_meter_position_x) > balance_bar_length / 2) {
+			has_fallen = true;
+			ApplyFall();
+		} else {
+		Vector3 sway_position =  player_controller.transform.position + corrected_meter_vector;
+		camera_controller.transform.position = sway_position;
+		}
 	}
 	
 	void ApplyFall() {
