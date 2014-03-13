@@ -3,8 +3,9 @@ using System.Collections;
 
 public class WindGenerator : MonoBehaviour {
 	
-	private float AMP = 0.1f;
-	private float FREQ = 0.01f;
+	// Wind value from -1 to 1
+	private float AMP = 1f;
+	private float FREQ = 0.001f;
 	
 	private int time_step = 0;
 	
@@ -22,6 +23,6 @@ public class WindGenerator : MonoBehaviour {
 	}
 			
 	void UpdateWind() {
-		wind_value = AMP * Mathf.Sin(2* Mathf.PI * FREQ * time_step);	
+		wind_value = AMP * Mathf.Sin(2* Mathf.PI * FREQ * time_step);
 	}
 }
