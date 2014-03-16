@@ -55,20 +55,20 @@ public class GameTime : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		sunMoonTransform[0].Rotate(new Vector3(_degreeRotation, 0, 0) * Time.deltaTime);
-		if (moon_light.transform.position.y < 0) {
-			moon_light.enabled = false;
-			moon_spot_light.enabled = false;
-		} else {
-			moon_light.enabled = true;
-			moon_spot_light.enabled = true;
-		}
-		if (sun_light.transform.position.y < 0) {
-			sun_light.enabled = false;
-			sun_spot_light.enabled = false;
-		} else {
-			sun_light.enabled = true;
-			sun_spot_light.enabled = true;
-		}
+//		if (moon_light.transform.position.y < 0) {
+//			moon_light.enabled = false;
+//			moon_spot_light.enabled = false;
+//		} else {
+//			moon_light.enabled = true;
+//			moon_spot_light.enabled = true;
+//		}
+//		if (sun_light.transform.position.y < 0) {
+//			sun_light.enabled = false;
+//			sun_spot_light.enabled = false;
+//		} else {
+//			sun_light.enabled = true;
+//			sun_spot_light.enabled = true;
+//		}
 		
 		_timeOfDay += Time.deltaTime;
 		
