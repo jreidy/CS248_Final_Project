@@ -45,7 +45,7 @@ public class CustomPlayerController : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (!has_fallen) {
+		if (!has_fallen && networkView.isMine) {
 			if (Input.GetKey ("f")) player_health -= 0.1f;
 			UpdateBalanceBar();
 			ApplyWind();

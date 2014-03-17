@@ -87,7 +87,11 @@ public class NetworkOVRPlayerController : OVRComponent
 			enabled = false;
 			
 			
+<<<<<<< HEAD
 			if (!networkView.isMine && CameraController != null) {
+=======
+			if (CameraController != null) {
+>>>>>>> 064ec518736ece46eabcf21f3a8c8a033c806a1e
 				Destroy (CameraController.gameObject);
 			}
 		} else {
