@@ -121,8 +121,8 @@ public class CustomPlayerController : MonoBehaviour {
 								CorrectedMeter.transform.localPosition.z);
 		CorrectedMeter.transform.localPosition = corrected_meter_vector;
 		if (Mathf.Abs(corrected_meter_position_x) > balance_bar_length / 2) {
-			has_fallen = true;
-			ApplyFall();
+//			has_fallen = true;
+//			ApplyFall();
 		} else {
 			Vector3 sway_position =  player_controller.transform.position + corrected_meter_vector;
 			camera_controller.transform.position = sway_position;
