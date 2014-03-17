@@ -87,9 +87,9 @@ public class NetworkOVRPlayerController : OVRComponent
 			enabled = false;
 			
 			
-			//if (!networkView.isMine && CameraController != null) {
+			if (CameraController != null) {
 				Destroy (CameraController.gameObject);
-			//}
+			}
 		} else {
 			base.Start ();
 
