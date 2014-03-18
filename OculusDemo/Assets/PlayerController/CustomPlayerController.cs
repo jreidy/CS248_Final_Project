@@ -13,6 +13,11 @@ public class CustomPlayerController : MonoBehaviour {
 	public GameObject BalanceMeter;
 	public GameObject WindMeter;
 	public GameObject CorrectedMeter;
+
+	//Text GUI
+	public GameObject ScoreBar;
+	public TextMesh score_text;
+	private int score = 0;
 	
 	//Current roll and wind values
 	private float roll_value = 0;
@@ -39,6 +44,7 @@ public class CustomPlayerController : MonoBehaviour {
 	public bool game_mode = false;
 	
 	void Start () {
+		UpdateScore(10);
 		wind_generator = GetComponent<WindGenerator>();
 		coin_generator = GetComponent<CoinGenerator>();
 		coin_generator.should_generate = false;
@@ -56,6 +62,7 @@ public class CustomPlayerController : MonoBehaviour {
 				CheckHeadYaw();
 				CheckHeadRoll();
 				ApplyCorrection();
+				ScoreBar.active = true;
 			} else {
 				// has fallen script
 				coin_generator.should_generate = false;
@@ -66,6 +73,8 @@ public class CustomPlayerController : MonoBehaviour {
 			has_fallen = false;
 			coin_generator.should_generate = false;
 			ResetMeters();
+			ResetScore();
+			ScoreBar.active = false;
 		}
 
 	}
@@ -83,6 +92,7 @@ public class CustomPlayerController : MonoBehaviour {
 		                                                     CorrectedMeter.transform.localPosition.z);
 		prev_roll_component = 0f;
 		prev_roll_correction_component = 0f;
+
 	}
 	
 	void UpdateBalanceBar() {
@@ -155,7 +165,7 @@ public class CustomPlayerController : MonoBehaviour {
 			ApplyFall();
 		} else {
 			Vector3 sway_position =  player_controller.transform.position - corrected_meter_vector / 10.0f;
-		camera_controller.transform.position = sway_position;
+			camera_controller.transform.position = sway_position;
 		}
 	}
 	
@@ -168,5 +178,16 @@ public class CustomPlayerController : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		print("collision");
 		Destroy(other.gameObject);
+		UpdateScore(10);
+	}
+
+	void UpdateScore(int new_points) {
+		score += new_points;
+		score_text.text = score.ToString();
+	}
+
+	void ResetScore() {
+		score = 0;
+		score_text.text = score.ToString();
 	}
 }
