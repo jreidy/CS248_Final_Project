@@ -20,7 +20,9 @@ public class CustomPlayerController : MonoBehaviour {
 	
 	private float roll_sensitivity = 3.0f;
 	
-	private WindGenerator wind_generator;
+	//Other classes
+	WindGenerator wind_generator;
+	AudioController audio_controller;
 	
 	private bool has_fallen = false;
 
@@ -39,6 +41,8 @@ public class CustomPlayerController : MonoBehaviour {
 //			enabled = false;
 //		} else {
 			wind_generator = GetComponent<WindGenerator>();
+//			audio_controller = GetComponent<AudioController>();
+//			audio_controller.wind_position_offset = 10;
 			balance_bar_length = player_health * balance_bar_scale_x;
 			balance_bar_length_init = balance_bar_length;
 		//}
@@ -121,8 +125,8 @@ public class CustomPlayerController : MonoBehaviour {
 								CorrectedMeter.transform.localPosition.z);
 		CorrectedMeter.transform.localPosition = corrected_meter_vector;
 		if (Mathf.Abs(corrected_meter_position_x) > balance_bar_length / 2) {
-//			has_fallen = true;
-//			ApplyFall();
+			has_fallen = true;
+			ApplyFall();
 		} else {
 			Vector3 sway_position =  player_controller.transform.position + corrected_meter_vector;
 			camera_controller.transform.position = sway_position;
