@@ -7,10 +7,10 @@ public class WindGenerator : MonoBehaviour {
 	private float AMP = 1f;
 	private float FREQ = 0.001f;
 	
-	private int time_step = 0;
+	public int time_step = 0;
 	
 	public float wind_value = 0f;
-	
+
 	// Use this for initialization
 	void Start () {
 		

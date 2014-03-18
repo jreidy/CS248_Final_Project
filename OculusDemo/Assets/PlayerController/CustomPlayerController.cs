@@ -65,8 +65,24 @@ public class CustomPlayerController : MonoBehaviour {
 			balance_bar_length = player_health * balance_bar_scale_x;
 			has_fallen = false;
 			coin_generator.should_generate = false;
+			ResetMeters();
 		}
 
+	}
+
+	void ResetMeters() {
+		wind_generator.time_step = 0;
+		BalanceMeter.transform.localPosition = new Vector3(0,
+		                                                   BalanceMeter.transform.localPosition.y,
+		                                                   BalanceMeter.transform.localPosition.z);
+		WindMeter.transform.localPosition = new Vector3(0,
+		                                                WindMeter.transform.localPosition.y,
+		                                                WindMeter.transform.localPosition.z);
+		CorrectedMeter.transform.localPosition = new Vector3(0,
+		                                                     CorrectedMeter.transform.localPosition.y,
+		                                                     CorrectedMeter.transform.localPosition.z);
+		prev_roll_component = 0f;
+		prev_roll_correction_component = 0f;
 	}
 	
 	void UpdateBalanceBar() {
