@@ -120,7 +120,7 @@ public class CustomPlayerController : MonoBehaviour {
 			has_fallen = true;
 			ApplyFall();
 		} else {
-		Vector3 sway_position =  player_controller.transform.position + corrected_meter_vector;
+			Vector3 sway_position =  player_controller.transform.position - corrected_meter_vector / 10.0f;
 		camera_controller.transform.position = sway_position;
 		}
 	}
