@@ -33,7 +33,6 @@ public class GameControl : MonoBehaviour {
 			ChangeGameMode();
 
 		}
-		print(PlayerController.game_mode);
 	}
 
 	void ChangeGameMode() {

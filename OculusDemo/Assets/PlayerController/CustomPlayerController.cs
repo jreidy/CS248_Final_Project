@@ -19,8 +19,10 @@ public class CustomPlayerController : MonoBehaviour {
 	private float wind_value = 0;
 	
 	private float roll_sensitivity = 3.0f;
-	
+
+	//private instances of other classes
 	private WindGenerator wind_generator;
+	private CoinGenerator coin_generator;
 	
 	private bool has_fallen = false;
 
@@ -38,6 +40,8 @@ public class CustomPlayerController : MonoBehaviour {
 	
 	void Start () {
 		wind_generator = GetComponent<WindGenerator>();
+		coin_generator = GetComponent<CoinGenerator>();
+		coin_generator.should_generate = false;
 		balance_bar_length = player_health * balance_bar_scale_x;
 		balance_bar_length_init = balance_bar_length;
 	}
@@ -46,6 +50,7 @@ public class CustomPlayerController : MonoBehaviour {
 		if (game_mode) {
 			if (!has_fallen) {
 				if (Input.GetKey ("f")) player_health -= 0.1f;
+				coin_generator.should_generate = true;
 				UpdateBalanceBar();
 				ApplyWind();
 				CheckHeadYaw();
@@ -53,11 +58,13 @@ public class CustomPlayerController : MonoBehaviour {
 				ApplyCorrection();
 			} else {
 				// has fallen script
+				coin_generator.should_generate = false;
 			}
 		} else { // at homescreen
 			player_health = 1.0f;
 			balance_bar_length = player_health * balance_bar_scale_x;
 			has_fallen = false;
+			coin_generator.should_generate = false;
 		}
 
 	}
@@ -140,5 +147,10 @@ public class CustomPlayerController : MonoBehaviour {
 		Vector3 fall_vec = new Vector3(0,3,0);
 		Vector3 updated_position = player_controller.transform.position - fall_vec;
 		player_controller.transform.position = updated_position;
+	}
+
+	void OnTriggerEnter(Collider other) {
+		print("collision");
+		Destroy(other.gameObject);
 	}
 }
