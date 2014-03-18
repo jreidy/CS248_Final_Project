@@ -28,6 +28,7 @@ public class CustomPlayerController : MonoBehaviour {
 	//private instances of other classes
 	private WindGenerator wind_generator;
 	private CoinGenerator coin_generator;
+	private HighScoresController high_scores;
 	
 	private bool has_fallen = false;
 
@@ -47,6 +48,7 @@ public class CustomPlayerController : MonoBehaviour {
 		UpdateScore(10);
 		wind_generator = GetComponent<WindGenerator>();
 		coin_generator = GetComponent<CoinGenerator>();
+		high_scores = GetComponent<HighScoresController>();
 		coin_generator.should_generate = false;
 		balance_bar_length = player_health * balance_bar_scale_x;
 		balance_bar_length_init = balance_bar_length;
@@ -173,6 +175,7 @@ public class CustomPlayerController : MonoBehaviour {
 		Vector3 fall_vec = new Vector3(0,3,0);
 		Vector3 updated_position = player_controller.transform.position - fall_vec;
 		player_controller.transform.position = updated_position;
+		high_scores.SubmitScore(score);
 	}
 
 	void OnTriggerEnter(Collider other) {
