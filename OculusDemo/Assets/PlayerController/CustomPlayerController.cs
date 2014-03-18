@@ -33,22 +33,33 @@ public class CustomPlayerController : MonoBehaviour {
 	
 	private float prev_roll_correction_component;
 	private float prev_roll_component;
+
+	public bool game_mode = false;
 	
 	void Start () {
 		wind_generator = GetComponent<WindGenerator>();
 		balance_bar_length = player_health * balance_bar_scale_x;
 		balance_bar_length_init = balance_bar_length;
 	}
-	
+
 	void Update () {
-		if (!has_fallen) {
-			if (Input.GetKey ("f")) player_health -= 0.1f;
-			UpdateBalanceBar();
-			ApplyWind();
-			CheckHeadYaw();
-			CheckHeadRoll();
-			ApplyCorrection();
+		if (game_mode) {
+			if (!has_fallen) {
+				if (Input.GetKey ("f")) player_health -= 0.1f;
+				UpdateBalanceBar();
+				ApplyWind();
+				CheckHeadYaw();
+				CheckHeadRoll();
+				ApplyCorrection();
+			} else {
+				// has fallen script
+			}
+		} else { // at homescreen
+			player_health = 1.0f;
+			balance_bar_length = player_health * balance_bar_scale_x;
+			has_fallen = false;
 		}
+
 	}
 	
 	void UpdateBalanceBar() {
