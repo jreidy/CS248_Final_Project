@@ -13,6 +13,7 @@ public class CustomPlayerController : MonoBehaviour {
 	public GameObject BalanceMeter;
 	public GameObject WindMeter;
 	public GameObject CorrectedMeter;
+	public GameObject DeathBoard;
 
 	//Text GUI
 	public GameObject ScoreBar;
@@ -65,9 +66,11 @@ public class CustomPlayerController : MonoBehaviour {
 				CheckHeadRoll();
 				ApplyCorrection();
 				ScoreBar.active = true;
+				DeathBoard.active = false;
 			} else {
 				// has fallen script
 				coin_generator.should_generate = false;
+				DeathBoard.active = true;
 			}
 		} else { // at homescreen
 			player_health = 1.0f;
@@ -77,6 +80,7 @@ public class CustomPlayerController : MonoBehaviour {
 			ResetMeters();
 			ResetScore();
 			ScoreBar.active = false;
+			DeathBoard.active = false;
 		}
 
 	}
