@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 05f099b267e600f4997b83860408556f
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - eagle_prefab: {instanceID: 0}
+  - eagle_collection: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

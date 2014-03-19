@@ -23,6 +23,7 @@ public class CustomPlayerController : MonoBehaviour {
 	//private instances of other classes
 	private WindGenerator wind_generator;
 	private CoinGenerator coin_generator;
+	private EagleGenerator eagle_generator;
 	
 	private bool has_fallen = false;
 
@@ -35,6 +36,9 @@ public class CustomPlayerController : MonoBehaviour {
 	
 	private float prev_roll_correction_component;
 	private float prev_roll_component;
+	
+	private float collisionTimeout = 1.0f;
+	private float latestCollision;
 
 	public bool game_mode = false;
 	
@@ -42,6 +46,8 @@ public class CustomPlayerController : MonoBehaviour {
 		wind_generator = GetComponent<WindGenerator>();
 		coin_generator = GetComponent<CoinGenerator>();
 		coin_generator.should_generate = false;
+		eagle_generator = GetComponent<EagleGenerator>();
+		eagle_generator.should_generate = false;
 		balance_bar_length = player_health * balance_bar_scale_x;
 		balance_bar_length_init = balance_bar_length;
 	}
@@ -51,6 +57,7 @@ public class CustomPlayerController : MonoBehaviour {
 			if (!has_fallen) {
 				if (Input.GetKey ("f")) player_health -= 0.1f;
 				coin_generator.should_generate = true;
+				eagle_generator.should_generate = true;
 				UpdateBalanceBar();
 				ApplyWind();
 				CheckHeadYaw();
@@ -59,12 +66,14 @@ public class CustomPlayerController : MonoBehaviour {
 			} else {
 				// has fallen script
 				coin_generator.should_generate = false;
+				eagle_generator.should_generate = false;
 			}
 		} else { // at homescreen
 			player_health = 1.0f;
 			balance_bar_length = player_health * balance_bar_scale_x;
 			has_fallen = false;
 			coin_generator.should_generate = false;
+			eagle_generator.should_generate = false;
 			ResetMeters();
 		}
 
@@ -166,7 +175,15 @@ public class CustomPlayerController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		print("collision");
-		Destroy(other.gameObject);
+		if (other.tag == "Eagle") {
+			// eagle
+			if (latestCollision == null || Time.time - latestCollision > collisionTimeout) {
+				player_health -= 0.01f; // Or whatever value is best
+				latestCollision = Time.time;
+			}
+		} else {
+			// coin
+			Destroy (other.gameObject);
+		}
 	}
 }
