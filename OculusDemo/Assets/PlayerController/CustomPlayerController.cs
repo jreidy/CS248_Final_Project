@@ -7,6 +7,7 @@ public class CustomPlayerController : MonoBehaviour {
 	public GameObject player_controller;
 	public GameObject camera_controller;
 	public GameObject camera_left;
+	public GameObject explosion;
 	
 	//GUI GameObjects
 	public GameObject BalanceBar;
@@ -23,12 +24,15 @@ public class CustomPlayerController : MonoBehaviour {
 	//Current roll and wind values
 	private float roll_value = 0;
 	private float wind_value = 0;
+
+	public AudioClip umf_sound;
 	
 	private float roll_sensitivity = 3.0f;
 
 	//private instances of other classes
 	private WindGenerator wind_generator;
 	private CoinGenerator coin_generator;
+	private EagleGenerator eagle_generator;
 	private HighScoresController high_scores;
 	
 	private bool has_fallen = false;
@@ -44,11 +48,16 @@ public class CustomPlayerController : MonoBehaviour {
 	private float prev_roll_component;
 
 	public bool game_mode = false;
+
+	private float latestCollision;
+	private float collisionTimeout = 1f;
+
 	
 	void Start () {
 		UpdateScore(10);
 		wind_generator = GetComponent<WindGenerator>();
 		coin_generator = GetComponent<CoinGenerator>();
+		eagle_generator = GetComponent<EagleGenerator>();
 		high_scores = GetComponent<HighScoresController>();
 		coin_generator.should_generate = false;
 		balance_bar_length = player_health * balance_bar_scale_x;
@@ -60,6 +69,7 @@ public class CustomPlayerController : MonoBehaviour {
 			if (!has_fallen) {
 				if (Input.GetKey ("f")) player_health -= 0.1f;
 				coin_generator.should_generate = true;
+				eagle_generator.should_generate = true;
 				UpdateBalanceBar();
 				ApplyWind();
 				CheckHeadYaw();
@@ -71,12 +81,14 @@ public class CustomPlayerController : MonoBehaviour {
 				// has fallen script
 				coin_generator.should_generate = false;
 				DeathBoard.active = true;
+				eagle_generator.should_generate = false;
 			}
 		} else { // at homescreen
 			player_health = 1.0f;
 			balance_bar_length = player_health * balance_bar_scale_x;
 			has_fallen = false;
 			coin_generator.should_generate = false;
+			eagle_generator.should_generate = false;
 			ResetMeters();
 			ResetScore();
 			ScoreBar.active = false;
@@ -180,12 +192,32 @@ public class CustomPlayerController : MonoBehaviour {
 		Vector3 updated_position = player_controller.transform.position - fall_vec;
 		player_controller.transform.position = updated_position;
 		high_scores.SubmitScore(score);
+		if (umf_sound.isReadyToPlay) {
+			AudioSource.PlayClipAtPoint(umf_sound, transform.position);
+		}
 	}
 
 	void OnTriggerEnter(Collider other) {
 		print("collision");
-		Destroy(other.gameObject);
-		UpdateScore(10);
+
+		if (other.tag == "Eagle") {
+			if (latestCollision == null || Time.time - latestCollision > collisionTimeout) {
+				player_health -= 0.1f;
+				latestCollision = Time.time;
+				if (umf_sound.isReadyToPlay) {
+					AudioSource.PlayClipAtPoint(umf_sound, transform.position);
+				}
+			}
+		} else {
+			GameObject new_explosion = (GameObject)Instantiate(explosion);
+			new_explosion.transform.parent = other.gameObject.transform;
+			print(new_explosion);
+			new_explosion.transform.localPosition = new Vector3(0f,0f,0f);
+			Destroy(new_explosion, 0.2f);
+			Destroy(other.gameObject, 0.2f);
+			UpdateScore(10);
+		}
+
 	}
 
 	void UpdateScore(int new_points) {

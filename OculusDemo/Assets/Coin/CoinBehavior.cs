@@ -9,6 +9,8 @@ public class CoinBehavior : MonoBehaviour {
 	private int decay_time =  10;
 	private int decay = 0;
 
+	public AudioClip coin_sound;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -24,5 +26,12 @@ public class CoinBehavior : MonoBehaviour {
 			}
 		}
 		coin.transform.Rotate(0,1,0);
+	}
+
+	void OnTriggerEnter(Collider other)
+	{
+		if (coin_sound.isReadyToPlay) {
+			AudioSource.PlayClipAtPoint(coin_sound, transform.position);
+		}
 	}
 }
